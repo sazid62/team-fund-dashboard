@@ -1,0 +1,45 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --ring: rgba(34,197,94,.35);
+  }
+  * { @apply box-border; }
+  html, body, #root { height: 100%; }
+}
+
+@layer components {
+  .btn {
+    @apply px-3 py-2 rounded-xl border border-slate-800 bg-slate-900 text-white cursor-pointer;
+  }
+  .btn-primary {
+    @apply border-emerald-900 bg-emerald-600;
+  }
+  .btn-warn {
+    @apply border-amber-900 bg-amber-600;
+  }
+  .btn-ghost {
+    @apply bg-transparent border-slate-700;
+  }
+  .input, select {
+    @apply px-3 py-2 rounded-xl border border-slate-800 bg-slate-900 text-white outline-none;
+  }
+  .input:focus, select:focus {
+    box-shadow: 0 0 0 3px var(--ring);
+  }
+  .card {
+    @apply rounded-2xl bg-slate-900/80 border border-slate-800 p-4 shadow-soft;
+    background: linear-gradient(180deg, #0c1427, #0f172a 35%);
+  }
+  .status {
+    @apply px-2.5 py-1 rounded-full text-xs border border-slate-800 inline-flex items-center;
+  }
+  .status-paid {
+    @apply bg-emerald-900/30 text-emerald-200;
+  }
+  .status-pending {
+    @apply bg-red-900/20 text-red-200;
+  }
+}
