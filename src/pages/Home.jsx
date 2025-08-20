@@ -123,13 +123,9 @@ export default function Home({ state, setState, monthKey, setMonthKey }) {
                 পেমেন্ট ডেডলাইন: প্রতি মাসের <b>১০</b> তারিখ
               </li>
               <li>
-                লোকাল সেভ: আপনি যা পরিবর্তন করবেন তা শুধু <b>এই ডিভাইসেই</b> সংরক্ষিত হবে (localStorage)
+                সদস্যদের পেমেন্ট: <b>৫,০০০</b> টাকা
               </li>
-              <li>ডেমো ডাটা কাস্টমাইজ করতে নিচে <b>সদস্য</b> ট্যাবে যান</li>
             </ul>
-            <p className="text-slate-400 text-sm mt-2">
-              এই ডেমোতে অনলাইন পেমেন্ট বা সার্ভার নেই — শুধু ফ্রন্টএন্ড UI।
-            </p>
           </div>
         </div>
       </Card>

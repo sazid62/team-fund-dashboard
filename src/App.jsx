@@ -9,6 +9,7 @@ import { MONTHS } from "./utils/demoData.js";
 import { jwtDecode } from "jwt-decode";
 import Login from "./components/Login.jsx";
 import UnauthorizedModal from "./components/UnauthorizedModal.tsx";
+import ContributionPage from "./components/ContributionPage.jsx";
 
 export default function App() {
   const allowedUsers = ["sajidurrahman3s2@gmail.com"];
@@ -93,12 +94,7 @@ const handleLogout = () => {
           )}
           {active === "members" && <Members state={state} setState={setState} />}
           {active === "contrib" && (
-            <Contributions
-              state={state}
-              setState={setState}
-              monthKey={monthKey}
-              setMonthKey={setMonthKey}
-            />
+           <ContributionPage/>
           )}
           {active === "rules" && <RulesPage state={state} setState={setState} />}
 
