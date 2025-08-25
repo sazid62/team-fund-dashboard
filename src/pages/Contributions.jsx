@@ -3,7 +3,7 @@ import ContribTable from "../components/ContribTable.jsx";
 import { MONTHS } from "../utils/demoData.js";
 
 export default function Contributions({ state, setState, monthKey, setMonthKey }) {
-  console.log("Contributions page loaded");
+
   function togglePaid(id) {
     setState((prev) => {
       const copy = structuredClone(prev);

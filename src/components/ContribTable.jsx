@@ -19,7 +19,7 @@ export default function ContribTable({
     if (q && !m.name.toLowerCase().includes(q.toLowerCase())) return false;
     return true;
   });
-console.log("Filtered members:", filtered);
+
   return (
     <div className="card">
       <div className="flex gap-2 flex-wrap items-center mb-3">

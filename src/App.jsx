@@ -112,7 +112,7 @@ export default function App() {
     }
   };
 
-  console.log("User:", contributionsJsonState);
+
   // Fetch contributions on mount
   useEffect(() => {
     fetchContributions();
@@ -157,7 +157,7 @@ export default function App() {
       </div>
     );
   }
-  console.log("Admin logged in:", isAdminLoggedIn);
+
   return (
     <>
       {!user ? (

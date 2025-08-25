@@ -13,7 +13,7 @@ export const MONTHS = (() => {
 })();
 
 export function formatBDT(n) {
-  console.log("formatBDT", n);
+
   return new Intl.NumberFormat("bn-BD").format(n) + " টাকা";
 }
 // utils/number.js
@@ -27,7 +27,7 @@ export function formatBDNumber(num) {
 
 
 export function formatBDDate(dateStr) {
-  console.log("formatBDDate", dateStr);
+
   const date = new Date(dateStr);
   return new Intl.DateTimeFormat("bn-BD", {
     year: "numeric",

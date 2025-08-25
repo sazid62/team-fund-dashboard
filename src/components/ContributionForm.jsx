@@ -66,7 +66,6 @@ export default function ContributionForm({
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Submitting form:", form);
 
     if (
       !form.date ||
@@ -96,10 +95,10 @@ export default function ContributionForm({
       status: "loading",
       message: "Submitting, please wait...",
     });
-
+ 
     try {
-      const senderProof = (await uploadFile(fileSender, "sender")).link;
-      const recvrProof = (await uploadFile(fileRecvr, "receiver")).link;
+      const senderProof = (await uploadFile(fileSender, form.sender)).link;
+      const recvrProof = (await uploadFile(fileRecvr, form.recipient)).link;
 
       const payload = {
         ...form,
