@@ -18,7 +18,7 @@ export default function App() {
   // Create user authentication mapping from allUserDetailsJson
   const createUserAuth = () => {
     const userAuth = {};
-    const adminIds = [21]; // Add admin user sl numbers here
+    const adminIds = [9]; // Add admin user sl numbers here
     allUserDetailsJson.forEach((user) => {
       // Use username field for authentication
       userAuth[user.username] = {

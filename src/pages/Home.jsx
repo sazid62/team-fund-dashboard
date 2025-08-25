@@ -3,6 +3,28 @@ import Card from "../components/Card.jsx";
 import ProgressBar from "../components/ProgressBar.jsx";
 import { MONTHS, formatBDT ,formatBDNumber } from "../utils/demoData.js";
 import { exportSummaryCSV } from "../utils/csv.js";
+import { 
+  CreditCard, 
+  BarChart3, 
+  FileText, 
+  DollarSign, 
+  TrendingUp, 
+  Users, 
+  Calendar, 
+  Target, 
+  PieChart,
+  Download,
+  Printer,
+  Eye,
+  EyeOff,
+  CheckCircle,
+  AlertTriangle,
+  Clock,
+  Wallet,
+  Activity,
+  AlertCircle,
+  Check
+} from "lucide-react";
 
 export default function Home({ contributionsJson }) {
   const target = 5000 * 21 * 24;
@@ -45,15 +67,11 @@ export default function Home({ contributionsJson }) {
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 dark:from-slate-900 dark:via-slate-800 dark:to-indigo-900 p-6">
       {/* Hero Section */}
       <div className="mb-8">
-        <div className="relative overflow-hidden bg-gradient-to-r from-indigo-600crounded-3xl shadow-2xl p-8 text-white">
+        <div className="relative overflow-hidden bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 rounded-3xl shadow-2xl p-8 text-white">
           <div className="absolute inset-0 bg-black/20"></div>
           <div className="relative z-10">
             <div className="flex items-center gap-4 mb-6">
-              <div className="w-16 h-16 bg-white/20 rounded-2xl flex items-center justify-center backdrop-blur-sm">
-                <svg className="w-8 h-8" fill="currentColor" viewBox="0 0 20 20">
-                  <path d="M4 4a2 2 0 00-2 2v1h16V6a2 2 0 00-2-2H4zM18 9H2v5a2 2 0 002 2h12a2 2 0 002-2V9zM4 13a1 1 0 011-1h1a1 1 0 110 2H5a1 1 0 01-1-1zm5-1a1 1 0 100 2h1a1 1 0 100-2H9z" />
-                </svg>
-              </div>
+           
               <div>
                 <h1 className="text-3xl md:text-4xl font-bold mb-2">স্বপ্নচারী টুয়েন্টি গ্রুপ</h1>
                 <p className="text-xl opacity-90">আমাদের স্বপ্নের যাত্রা, একসাথে এগিয়ে চলা</p>
@@ -83,25 +101,26 @@ export default function Home({ contributionsJson }) {
         <div className="bg-white dark:bg-slate-800 rounded-2xl shadow-lg p-2">
           <div className="flex flex-wrap gap-2">
             {[
-              { id: 'overview', label: 'সংক্ষিপ্ত বিবরণ', icon: '' },
-        
-              
-              { id: 'documents', label: 'ডকুমেন্ট', icon: '' }
-            ].map(tab => (
-              <button
-                key={tab.id}
-                onClick={() => setActiveTab(tab.id)}
-                className={`flex items-center gap-2 px-4 py-2 rounded-xl transition-all duration-200 ${
-                  activeTab === tab.id
-                    ? 'bg-gradient-to-r from-indigo-500 to-purple-600 text-white shadow-lg transform scale-105'
-                    : 'text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-slate-700'
-                }`}
-              >
-                <span>{tab.icon}</span>
-                <span className="font-medium text-sm">{tab.label}</span>
-              </button>
-            ))}
-          </div>
+              { id: 'overview', label: 'সংক্ষিপ্ত বিবরণ', icon: BarChart3 },
+              { id: 'documents', label: 'ডকুমেন্ট', icon: FileText }
+            ].map(tab => {
+              const IconComponent = tab.icon;
+              return (
+                <button
+                  key={tab.id}
+                  onClick={() => setActiveTab(tab.id)}
+                  className={`flex items-center gap-2 px-4 py-2 rounded-xl transition-all duration-200 ${
+                    activeTab === tab.id
+                      ? 'bg-gradient-to-r from-indigo-500 to-purple-600 text-white shadow-lg transform scale-105'
+                      : 'text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-slate-700'
+                  }`}
+                >
+                  <IconComponent size={16} />
+                  <span className="font-medium text-sm">{tab.label}</span>
+                </button>
+              );
+            })
+          }
         </div>
       </div>
 
@@ -112,7 +131,9 @@ export default function Home({ contributionsJson }) {
           <div className="space-y-6">
             <div className="bg-white dark:bg-slate-800 rounded-2xl shadow-lg p-6">
               <h3 className="text-xl font-bold mb-4 text-gray-800 dark:text-white flex items-center gap-2">
-                <span className="w-8 h-8 bg-gradient-to-r from-green-400 to-blue-500 rounded-lg flex items-center justify-center text-white text-sm">💰</span>
+                <span className="w-8 h-8 bg-gradient-to-r from-green-400 to-blue-500 rounded-lg flex items-center justify-center text-white">
+                  <Wallet size={16} />
+                </span>
                 আর্থিক অবস্থা
               </h3>
               <div className="space-y-4">
@@ -132,10 +153,7 @@ export default function Home({ contributionsJson }) {
             </div>
 
             <div className="bg-white dark:bg-slate-800 rounded-2xl shadow-lg p-6">
-              <h3 className="text-xl font-bold mb-4 text-gray-800 dark:text-white flex items-center gap-2">
-                <span className="w-8 h-8 bg-gradient-to-r from-purple-400 to-pink-500 rounded-lg flex items-center justify-center text-white text-sm">⏰</span>
-                পেমেন্ট রিমাইন্ডার
-              </h3>
+          
               <div className="text-center">
                 <div className="text-3xl font-bold text-indigo-600 mb-2">
                   {nextPaymentDate.toLocaleDateString('bn-BD', { day: 'numeric', month: 'long', year: 'numeric' })}
@@ -154,7 +172,9 @@ export default function Home({ contributionsJson }) {
           <div className="space-y-6">
             <div className="bg-white dark:bg-slate-800 rounded-2xl shadow-lg p-6">
               <h3 className="text-xl font-bold mb-6 text-gray-800 dark:text-white flex items-center gap-2">
-                <span className="w-8 h-8 bg-gradient-to-r from-blue-400 to-cyan-500 rounded-lg flex items-center justify-center text-white text-sm">📈</span>
+                <span className="w-8 h-8 bg-gradient-to-r from-blue-400 to-cyan-500 rounded-lg flex items-center justify-center text-white">
+                  <TrendingUp size={16} />
+                </span>
                 অগ্রগতির চার্ট
               </h3>
               
@@ -188,9 +208,10 @@ export default function Home({ contributionsJson }) {
             </div>
 
             <div className="bg-white dark:bg-slate-800 rounded-2xl shadow-lg p-6">
-              <h3 className="text-xl font-bold mb-4 text-gray-800 dark:text-white flex items-center gap-2">
-                <span className="w-8 h-8 bg-gradient-to-r from-yellow-400 to-orange-500 rounded-lg flex items-center justify-center text-white text-sm">📊</span>
-                এই মাসের অবস্থা
+              <h3 className="   text-2xl font-bold mb-4   e flex items-center gap-2">
+               <span className="w-8 h-8 bg-gradient-to-r from-blue-400 to-cyan-500 rounded-lg flex items-center justify-center text-white">
+                  <CheckCircle size={16} />
+                </span>  এই মাসের অবস্থা
               </h3>
               <div className="space-y-3">
                 <div className="flex justify-between items-center">
@@ -272,16 +293,12 @@ export default function Home({ contributionsJson }) {
                 <span className="relative z-10 flex items-center gap-3">
                   {showPDF ? (
                     <>
-                      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                      </svg>
+                      <EyeOff size={20} />
                       PDF লুকান
                     </>
                   ) : (
                     <>
-                      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                      </svg>
+                      <Eye size={20} />
                       সম্পূর্ণ PDF ডকুমেন্ট দেখুন
                     </>
                   )}
@@ -320,7 +337,7 @@ export default function Home({ contributionsJson }) {
                   
                   <div className="pt-12 h-[700px]">
                     <iframe
-                      src="/src/utils/rules.pdf#toolbar=1&navpanes=1&scrollbar=1"
+                      src="/rules.pdf#toolbar=1&navpanes=1&scrollbar=1"
                       className="w-full h-full border-0"
                       title="স্বপ্নচারী টুয়েন্টি গ্রুপ - অফিসিয়াল নিয়মাবলী"
                       loading="lazy"
@@ -330,22 +347,18 @@ export default function Home({ contributionsJson }) {
                 
                 <div className="flex flex-wrap gap-4 justify-center">
                   <a
-                    href="/src/utils/rules.pdf"
+                    href="/rules.pdf"
                     download="স্বপ্নচারী-টুয়েন্টি-গ্রুপ-নিয়মাবলী.pdf"
                     className="inline-flex items-center gap-2 px-6 py-3 bg-green-600 hover:bg-green-700 text-white rounded-xl transition-colors duration-200 shadow-lg hover:shadow-xl transform hover:scale-105"
                   >
-                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                    </svg>
+                    <Download size={20} />
                     ডাউনলোড করুন
                   </a>
                   <button
                     onClick={() => window.print()}
                     className="inline-flex items-center gap-2 px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-xl transition-colors duration-200 shadow-lg hover:shadow-xl transform hover:scale-105"
                   >
-                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
-                    </svg>
+                    <Printer size={20} />
                     প্রিন্ট করুন
                   </button>
                 </div>
@@ -355,5 +368,7 @@ export default function Home({ contributionsJson }) {
         </div>
       )}
     </div>
-  );
-}
+  </div>
+
+    );
+  }

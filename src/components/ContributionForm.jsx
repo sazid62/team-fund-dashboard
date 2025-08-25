@@ -123,7 +123,7 @@ export default function ContributionForm({
       setModal({
         visible: true,
         status: "success",
-        message: "✅ কনট্রিবিউশন সফলভাবে সাবমিট হয়েছে!",
+        message: "কনট্রিবিউশন সফলভাবে সাবমিট হয়েছে!",
       });
       setContributionsJsonState([...contributionsJson, payload]);
       // Reset form

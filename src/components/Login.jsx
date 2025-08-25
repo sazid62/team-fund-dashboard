@@ -72,7 +72,7 @@ const Login = ({ onLogin }) => {
           </div>
 
           {/* Login Form */}
-          <form onSubmit={handleSubmit} className="relative z-10 space-y-4">
+          <form onSubmit={handleSubmit} className="relative z-10 space-y-4 mb-10">
             {/* Error Message */}
             {error && (
               <div className="bg-red-900/30 border border-red-500/50 rounded-lg p-3 text-center">
@@ -85,7 +85,7 @@ const Login = ({ onLogin }) => {
               <label className="block text-sm font-medium text-gray-300 mb-2">
                 ব্যবহারকারী নির্বাচন করুন 
               </label>
-              <div className="relative" ref={dropdownRef}>
+              <div className="relative " ref={dropdownRef}>
                 <button
                   type="button"
                   onClick={() => setShowDropdown(!showDropdown)}
@@ -114,7 +114,7 @@ const Login = ({ onLogin }) => {
                 
                 {/* Dropdown */}
                 {showDropdown && (
-                  <div className="absolute top-full left-0 right-0 mt-1 bg-slate-800 border border-gray-700 rounded-lg shadow-lg max-h-60 overflow-y-auto z-50">
+                  <div className="absolute top-full left-0 right-0 mt-1  bg-slate-800 border border-gray-700 rounded-lg shadow-lg max-h-60 overflow-y-auto z-50">
                     {allUserDetailsJson.map((user) => (
                       <button
                         key={user.username}
@@ -128,9 +128,9 @@ const Login = ({ onLogin }) => {
                         <div className="flex-1 min-w-0">
                           <div className="text-sm font-medium text-gray-200 truncate">{user.name}</div>
                           <div className="text-xs text-gray-400">@{user.username}</div>
-             
+            
                         </div>
-                        {user.sl === 21 && (
+                        {user.sl === 9 && (
                           <span className="text-xs bg-indigo-600 text-white px-2 py-1 rounded-full">Admin</span>
                         )}
                       </button>

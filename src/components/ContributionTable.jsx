@@ -19,7 +19,7 @@ export default function ContributionTable({ records }) {
 
   const getProfileImage = (name) => {
     const user = allUserDetailsJson.find((u) => u.name === name);
-    return user?.profile_image ? getDriveImage(user.profile_image) : "/default.jpeg";
+    return user?.profile_image || "/default.jpeg";
   };
 
   const banglaMethod = (method) => {

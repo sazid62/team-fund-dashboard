@@ -12,7 +12,7 @@ export const allUserDetailsJson = [
     nid: "",
     workplace: "দুবাই",
     nominee: "রুবি আক্তার",
-    profile_image: "src/profile_pic/1.jpeg"
+    profile_image: "/profile_pic/1.jpeg"
   },
   {
     sl: 2,
@@ -27,7 +27,7 @@ export const allUserDetailsJson = [
     nid: "",
     workplace: "দুবাই",
     nominee: "মুহাম্মদ ইমরুল হাসান",
-    profile_image: "src/profile_pic/2.jpeg"
+    profile_image: "/profile_pic/2.jpeg"
   },
   {
     sl: 3,
@@ -42,7 +42,7 @@ export const allUserDetailsJson = [
     nid: "5564760162",
     workplace: "কক্সবাজার",
     nominee: "সিয়াম (ছেলে)",
-    profile_image: "src/profile_pic/3.jpeg"
+    profile_image: "/profile_pic/3.jpeg"
   },
   {
     sl: 4,
@@ -57,7 +57,7 @@ export const allUserDetailsJson = [
     nid: "7364656228",
     workplace: "প্রবাসি",
     nominee: "রিয়াদ (ভাই)",
-    profile_image: "src/profile_pic/4.jpeg"
+    profile_image: "/profile_pic/4.jpeg"
   },
   {
     sl: 5,
@@ -72,7 +72,7 @@ export const allUserDetailsJson = [
     nid: "",
     workplace: "ওমান প্রবাসী",
     nominee: "আজওয়াদ",
-    profile_image: "src/profile_pic/5.jpeg"
+    profile_image: "/profile_pic/5.jpeg"
   },
   {
     sl: 6,
@@ -87,7 +87,7 @@ export const allUserDetailsJson = [
     nid: "",
     workplace: "ওমান প্রবাসী",
     nominee: "মো: সরওয়ার",
-    profile_image: "src/profile_pic/6.jpeg"
+    profile_image: "/profile_pic/6.jpeg"
   },
   {
     sl: 7,
@@ -102,7 +102,7 @@ export const allUserDetailsJson = [
     nid: "6014599291",
     workplace: "ওমান নেষ্টু হাইপার মার্কেট",
     nominee: "হোসনে আরা বেগম",
-    profile_image: "src/profile_pic/7.jpeg"
+    profile_image: "/profile_pic/7.jpeg"
   },
   {
     sl: 8,
@@ -117,7 +117,7 @@ export const allUserDetailsJson = [
     nid: "",
     workplace: "ওমান প্রবাসী",
     nominee: "মো: সাফওয়ান চৌধুরী",
-    profile_image: "src/profile_pic/8.jpeg"
+    profile_image: "/profile_pic/8.jpeg"
   },
   {
     sl: 9,
@@ -132,7 +132,7 @@ export const allUserDetailsJson = [
     nid: "5555048197",
     workplace: "ভুজপুর কাজিরহাট",
     nominee: "বাদশা মিয়া",
-    profile_image: "src/profile_pic/9.jpeg"
+    profile_image: "/profile_pic/9.jpeg"
   },
   {
     sl: 10,
@@ -147,7 +147,7 @@ export const allUserDetailsJson = [
     nid: "",
     workplace: "মাসকাট, ওমান",
     nominee: "নাফিজুর রহমান (ছেলে)",
-    profile_image: "src/profile_pic/10.jpeg"
+    profile_image: "/profile_pic/10.jpeg"
   },
   {
     sl: 11,
@@ -162,7 +162,7 @@ export const allUserDetailsJson = [
     nid: "8255040068",
     workplace: "চট্টগ্রাম",
     nominee: "হুমাইরা (স্ত্রী)",
-    profile_image: "src/profile_pic/11.jpeg"
+    profile_image: "/profile_pic/11.jpeg"
   },
   {
     sl: 12,
@@ -177,7 +177,7 @@ export const allUserDetailsJson = [
     nid: "2864601410",
     workplace: "আরব আমিরাত",
     nominee: "মো: বোরহান উদ্দিন চৌধুরী (ভাই)",
-    profile_image: "src/profile_pic/12.jpeg"
+    profile_image: "/profile_pic/12.jpeg"
   },
   {
     sl: 13,
@@ -192,7 +192,7 @@ export const allUserDetailsJson = [
     nid: "5105025349",
     workplace: "ভুজপুর",
     nominee: "মো: তৈয়ব",
-    profile_image: "src/profile_pic/13.jpeg"
+    profile_image: "/profile_pic/13.jpeg"
   },
   {
     sl: 14,
@@ -207,7 +207,7 @@ export const allUserDetailsJson = [
     nid: "",
     workplace: "রোমানিয়া",
     nominee: "সুফিয়া বেগম (মা)",
-    profile_image: "src/profile_pic/14.jpeg"
+    profile_image: "/profile_pic/14.jpeg"
   },
   {
     sl: 15,
@@ -222,7 +222,7 @@ export const allUserDetailsJson = [
     nid: "19991513342106399",
     workplace: "চট্টগ্রাম, অক্সিজেন পাবলিক",
     nominee: "শান্তি বালা ত্রিপুরা (মা)",
-    profile_image: "src/profile_pic/15.jpeg"
+    profile_image: "/profile_pic/15.jpeg"
   },
   {
     sl: 16,
@@ -237,7 +237,7 @@ export const allUserDetailsJson = [
     nid: "3314585385",
     workplace: "ভুজপুর কাজির হাট",
     nominee: "",
-    profile_image: "src/profile_pic/16.jpeg"
+    profile_image: "/profile_pic/16.jpeg"
   },
   {
     sl: 17,
@@ -252,7 +252,7 @@ export const allUserDetailsJson = [
     nid: "",
     workplace: "United Arab Emirates",
     nominee: "Sayed Nur Alahee",
-    profile_image: "src/profile_pic/17.jpeg"
+    profile_image: "/profile_pic/17.jpeg"
   },
   {
     sl: 18,
@@ -267,7 +267,7 @@ export const allUserDetailsJson = [
     nid: "2864605577",
     workplace: "ভুজপুর কাজির হাট",
     nominee: "মো: হামিদুল্লাহ",
-    profile_image: "src/profile_pic/18.jpeg"
+    profile_image: "/profile_pic/18.jpeg"
   },
   {
     sl: 19,
@@ -282,7 +282,7 @@ export const allUserDetailsJson = [
     nid: "2864604778",
     workplace: "ব্যবসা (চৌধুরী পাড়া)",
     nominee: "রুজি আমিন চৌধুরী (মা)",
-    profile_image: "src/profile_pic/19.jpeg"
+    profile_image: "/profile_pic/19.jpeg"
   },
   {
     sl: 20,
@@ -297,7 +297,7 @@ export const allUserDetailsJson = [
     nid: "",
     workplace: "কাজিরহাট",
     nominee: "সুকিলা আকতার",
-    profile_image: "src/profile_pic/20.jpeg"
+    profile_image: "/profile_pic/20.jpeg"
   },
   {
     sl: 21,
@@ -312,7 +312,7 @@ export const allUserDetailsJson = [
     nid: "১০৩৩০৭৮২২৯",
     workplace: "সিলেট",
     nominee: "কানিজ মোস্তফা (মা)",
-    profile_image: "src/profile_pic/21.jpeg"
+    profile_image: "/profile_pic/21.jpeg"
   }
 ];
 
