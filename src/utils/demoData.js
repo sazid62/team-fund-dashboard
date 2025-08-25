@@ -13,7 +13,27 @@ export const MONTHS = (() => {
 })();
 
 export function formatBDT(n) {
+  console.log("formatBDT", n);
   return new Intl.NumberFormat("bn-BD").format(n) + " টাকা";
+}
+// utils/number.js
+export function formatBDNumber(num) {
+  if (num === null || num === undefined) return "";
+
+  const bengaliDigits = ["০", "১", "২", "৩", "৪", "৫", "৬", "৭", "৮", "৯"];
+
+  return String(num).replace(/[0-9]/g, (d) => bengaliDigits[d]);
+}
+
+
+export function formatBDDate(dateStr) {
+  console.log("formatBDDate", dateStr);
+  const date = new Date(dateStr);
+  return new Intl.DateTimeFormat("bn-BD", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  }).format(date);
 }
 
 export const STORAGE_KEY = "team-fund-demo-v2";

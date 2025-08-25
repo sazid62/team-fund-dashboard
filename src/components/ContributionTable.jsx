@@ -1,79 +1,108 @@
-import React from "react";
+import React, { useState } from "react";
+import { allUserDetailsJson } from "../utils/allUserDetailsJson";
+import RobustImageThumbnails from "./RobustImageThumbnails.jsx";
+import {  formatBDT ,formatBDDate} from "../utils/demoData.js";
+export default function ContributionTable({ records }) {
+  const [popupImage, setPopupImage] = useState(null);
 
-export default function ContributionTable({ records, setRecords, role }) {
-  const handleDelete = (idx) => {
-    const newRecs = records.filter((_, i) => i !== idx);
-    setRecords(newRecs);
+  const getDriveImage = (url) => {
+    if (!url) return "";
+    try {
+      let fileId = "";
+      const match = url.match(/\/d\/([a-zA-Z0-9_-]+)/) || url.match(/id=([a-zA-Z0-9_-]+)/);
+      if (match) fileId = match[1];
+      return fileId ? `https://drive.google.com/uc?export=view&id=${fileId}` : url;
+    } catch {
+      return url;
+    }
+  };
+
+  const getProfileImage = (name) => {
+    const user = allUserDetailsJson.find((u) => u.name === name);
+    return user?.profile_image ? getDriveImage(user.profile_image) : "/default.jpeg";
+  };
+
+  const banglaMethod = (method) => {
+    if (method === "Cash") return "নগদ";
+    if (method === "Bank Transfer") return "ব্যাংক ট্রান্সফার";
+    if (method === "Mobile Payment") return "মোবাইল পেমেন্ট";
+    return method;
   };
 
   return (
-    <section className="bg-slate-900 border border-slate-700 rounded-xl shadow-lg p-4 overflow-auto">
-      <table className="w-full text-sm">
-        <thead className="text-slate-400 uppercase text-xs">
+    <div className="overflow-x-auto p-4 bg-gray-900 rounded-lg shadow-lg">
+      <table className="w-full border-collapse text-sm text-left text-gray-200">
+        <thead className="bg-gray-800 text-gray-100 uppercase text-xs">
           <tr>
-            <th className="p-2">SL</th>
-            <th className="p-2">তারিখ</th>
-            <th className="p-2">প্রাপক</th>
-            <th className="p-2">Sender</th>
-            <th className="p-2">পরিমাণ</th>
-            <th className="p-2">Method</th>
-            <th className="p-2">From</th>
-            <th className="p-2">To</th>
-            <th className="p-2">Txn ID</th>
-            <th className="p-2">Proof</th>
-            <th className="p-2">Note</th>
-            {role === "admin" && <th className="p-2">Actions</th>}
+            <th className="px-4 py-3 border border-gray-700 text-center">প্রেরক</th>
+            <th className="px-4 py-3 border border-gray-700 text-center">প্রাপক</th>
+            <th className="px-4 py-3 border border-gray-700 text-center">পরিমাণ</th>
+            <th className="px-4 py-3 border border-gray-700 text-center">পদ্ধতি</th>
+            <th className="px-4 py-3 border border-gray-700 text-center">লেনদেন আইডি</th>
+            <th className="px-4 py-3 border border-gray-700 text-center">তারিখ</th>
+            <th className="px-4 py-3 border border-gray-700 text-center">প্রমাণ</th>
           </tr>
         </thead>
         <tbody>
           {records.map((r, idx) => (
-            <tr key={idx} className="hover:bg-slate-800">
-              <td className="p-2">{idx + 1}</td>
-              <td className="p-2">{r.date}</td>
-              <td className="p-2">{r.recipient}</td>
-              <td className="p-2">{r.sender}</td>
-              <td className="p-2">{r.amount}</td>
-              <td className="p-2">{r.method}</td>
-              <td className="p-2">{r.fromNo}</td>
-              <td className="p-2">{r.toNo}</td>
-              <td className="p-2">{r.txnId}</td>
-              <td className="p-2">
-                {r.proofLink && (
-                  <a
-                    href={r.proofLink}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="text-indigo-400 underline"
-                  >
-                    Link
-                  </a>
-                )}
+            <tr
+              key={idx}
+              className={`border-b border-gray-700 ${
+                idx % 2 === 0 ? "bg-gray-900" : "bg-gray-800"
+              } hover:bg-gray-700 transition-colors`}
+            >
+              {/* Sender */}
+              <td className="text-center px-4 py-2 flex items-center gap-2">
+                <img
+                  src={getProfileImage(r.sender)}
+                  alt={r.sender}
+                  className="w-8 h-8 rounded-full object-cover border border-gray-600 shadow-sm hover:shadow-lg cursor-pointer"
+                  title={r.sender}
+                />
+                <span className="font-medium text-white">{r.sender}</span>
               </td>
-              <td className="p-2">{r.note}</td>
-              {role === "admin" && (
-                <td className="p-2">
-                  <button
-                    onClick={() => handleDelete(idx)}
-                    className="bg-red-600 px-2 py-1 rounded text-white text-xs"
-                  >
-                    Delete
-                  </button>
-                </td>
-              )}
+
+              {/* Recipient */}
+              <td className="text-center px-4 py-2 font-medium text-white">{r.recipient}</td>
+
+              {/* Amount */}
+              <td className="text-center px-4 py-2 font-semibold text-green-400">{formatBDT(r.amount)}</td>
+
+              {/* Method */}
+              <td className="text-center px-4 py-2 text-white">{banglaMethod(r.method)}</td>
+
+              {/* Txn ID */}
+              <td className="text-center px-4 py-2 text-gray-100">{r.txn_id}</td>
+
+              {/* Date */}
+              <td className="text-center px-4 py-2 text-gray-200">{formatBDDate( r.date)}</td>
+
+              {/* Proof Images */}
+              <td className="text-center px-4 py-2 flex gap-2">
+                {r.sender_proof && <RobustImageThumbnails url={r.sender_proof} size={50} />}
+                {r.recvr_proof && <RobustImageThumbnails url={r.recvr_proof} size={50} />}
+              </td>
             </tr>
           ))}
-          {records.length === 0 && (
-            <tr>
-              <td
-                colSpan={role === "admin" ? 12 : 11}
-                className="text-center py-4 text-slate-400"
-              >
-                No contributions yet
-              </td>
-            </tr>
-          )}
         </tbody>
       </table>
-    </section>
+
+      {/* Image Popup */}
+      {popupImage && (
+        <div className="fixed inset-0 bg-black bg-opacity-95 flex items-center justify-center z-50 p-4">
+          <img
+            src={getDriveImage(popupImage)}
+            alt="Proof Full"
+            className="max-h-[95%] max-w-[95%] rounded-lg shadow-2xl"
+          />
+          <button
+            className="absolute top-6 right-6 text-white text-3xl font-bold"
+            onClick={() => setPopupImage(null)}
+          >
+            ✕
+          </button>
+        </div>
+      )}
+    </div>
   );
 }

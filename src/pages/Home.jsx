@@ -1,134 +1,359 @@
+import React, { useState } from "react";
 import Card from "../components/Card.jsx";
 import ProgressBar from "../components/ProgressBar.jsx";
-import { MONTHS, formatBDT } from "../utils/demoData.js";
+import { MONTHS, formatBDT ,formatBDNumber } from "../utils/demoData.js";
 import { exportSummaryCSV } from "../utils/csv.js";
-import React from "react";
 
-export default function Home({ state, setState, monthKey, setMonthKey }) {
+export default function Home({ contributionsJson }) {
   const target = 5000 * 21 * 24;
+  const [currentMonthStart, currentMonthEnd] = [
+    new Date(new Date().getFullYear(), new Date().getMonth(), 1).toISOString().split("T")[0],
+    new Date(new Date().getFullYear(), new Date().getMonth() + 1, 0).toISOString().split("T")[0],
+  ];
 
-  const collected = React.useMemo(() => {
-    let total = 0;
-    Object.values(state.contrib).forEach((map) => {
-      Object.values(map).forEach((paid) => {
-        if (paid) total += 5000;
-      });
-    });
-    return total;
-  }, [state.contrib]);
+  const collected = contributionsJson.reduce((sum, r) => sum + (r.amount || 0), 0);
+  const paidMemberCount = new Set(
+    contributionsJson
+      .filter((r) => r.date >= currentMonthStart && r.date <= currentMonthEnd)
+      .map((r) => r.sender)
+  ).size;
 
   const pct = Math.min(100, Math.round((collected / target) * 100));
+  const remainingAmount = target - collected;
+  const monthlyTarget = 5000 * 21;
+  const currentMonthCollection = contributionsJson
+    .filter((r) => r.date >= currentMonthStart && r.date <= currentMonthEnd)
+    .reduce((sum, r) => sum + (r.amount || 0), 0);
 
-  const map = state.contrib[monthKey] || {};
-  const paidCount = state.members.filter((m) => map[m.id]).length;
-
-  function togglePaid(id) {
-    setState((prev) => {
-      const copy = structuredClone(prev);
-      copy.contrib[monthKey] = copy.contrib[monthKey] || {};
-      copy.contrib[monthKey][id] = !copy.contrib[monthKey][id];
-      return copy;
-    });
+  // পরবর্তী পেমেন্টের তারিখ ও রিমাইন্ডার
+  const today = new Date();
+  const currentMonthPaymentDay = new Date(today.getFullYear(), today.getMonth(), 10);
+  let nextPaymentDate;
+  if (today <= currentMonthPaymentDay) {
+    nextPaymentDate = currentMonthPaymentDay;
+  } else {
+    nextPaymentDate = new Date(today.getFullYear(), today.getMonth() + 1, 10);
   }
 
-  function exportCSV() {
-    exportSummaryCSV(state, monthKey);
-  }
+  const remainingDays = Math.ceil((nextPaymentDate - today) / (1000 * 60 * 60 * 24));
+
+  // States
+  const [showPDF, setShowPDF] = useState(false);
+  const [activeTab, setActiveTab] = useState('overview');
 
   return (
-    <div className="space-y-4">
-      <div className="grid md:grid-cols-3 gap-4">
-        <Card title="মোট লক্ষ্য (২৪ মাস)">
-          <div className="text-3xl font-extrabold">{formatBDT(target)}</div>
-          <div className="text-slate-500 text-sm">৫,০০০ × ২১ × ২৪</div>
-        </Card>
-        <Card title="এ পর্যন্ত সংগ্রহ">
-          <div className="text-3xl font-extrabold">{formatBDT(collected)}</div>
-          <ProgressBar value={pct} />
-          <div className="text-slate-500 text-sm mt-1">{pct}% সম্পন্ন</div>
-        </Card>
-        <Card title="চলতি মাসের অবস্থা">
-          <div className="text-3xl font-extrabold">
-            {paidCount}/{state.members.length} জন পেইড
-          </div>
-          <div className="text-slate-500 text-sm">
-            অপরিশোধিত: {state.members.length - paidCount} জন
-          </div>
-        </Card>
-      </div>
-
-      <Card>
-        <div className="flex flex-wrap gap-2 items-center mb-3">
-          <div className="px-3 py-2 rounded-full bg-slate-950 border border-slate-800 text-slate-300 text-sm flex items-center gap-2">
-            <span>মাস নির্বাচন:</span>
-            <select
-              className="input"
-              value={monthKey}
-              onChange={(e) => setMonthKey(e.target.value)}
-            >
-              {MONTHS.map((m) => (
-                <option key={m.key} value={m.key}>
-                  {m.label}
-                </option>
-              ))}
-            </select>
-          </div>
-          <button className="btn btn-ghost" onClick={exportCSV}>
-            Export Summary CSV
-          </button>
-        </div>
-
-        <div className="grid md:grid-cols-2 gap-4">
-          <div>
-            <h3 className="text-slate-400 text-sm font-semibold mb-2">মাসিক স্ট্যাটাস</h3>
-            <div className="overflow-x-auto">
-              <table className="w-full border-separate border-spacing-y-2">
-                <thead>
-                  <tr className="text-left text-slate-400 text-sm">
-                    <th className="px-3 py-2">সদস্য</th>
-                    <th className="px-3 py-2">স্ট্যাটাস</th>
-                    <th className="px-3 py-2">পেমেন্ট</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {state.members.map((m) => {
-                    const paid = !!map[m.id];
-                    return (
-                      <tr key={m.id} className="bg-slate-950 border border-slate-800">
-                        <td className="px-3 py-2 rounded-l-xl">{m.name}</td>
-                        <td className="px-3 py-2">
-                          <span className={`status ${paid ? "status-paid" : "status-pending"}`}>
-                            {paid ? "পেইড" : "পেন্ডিং"}
-                          </span>
-                        </td>
-                        <td className="px-3 py-2 rounded-r-xl">
-                          <button
-                            className={`btn ${paid ? "btn-ghost" : ""}`}
-                            onClick={() => togglePaid(m.id)}
-                          >
-                            {paid ? "Mark Pending" : "Mark Paid"}
-                          </button>
-                        </td>
-                      </tr>
-                    );
-                  })}
-                </tbody>
-              </table>
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 dark:from-slate-900 dark:via-slate-800 dark:to-indigo-900 p-6">
+      {/* Hero Section */}
+      <div className="mb-8">
+        <div className="relative overflow-hidden bg-gradient-to-r from-indigo-600crounded-3xl shadow-2xl p-8 text-white">
+          <div className="absolute inset-0 bg-black/20"></div>
+          <div className="relative z-10">
+            <div className="flex items-center gap-4 mb-6">
+              <div className="w-16 h-16 bg-white/20 rounded-2xl flex items-center justify-center backdrop-blur-sm">
+                <svg className="w-8 h-8" fill="currentColor" viewBox="0 0 20 20">
+                  <path d="M4 4a2 2 0 00-2 2v1h16V6a2 2 0 00-2-2H4zM18 9H2v5a2 2 0 002 2h12a2 2 0 002-2V9zM4 13a1 1 0 011-1h1a1 1 0 110 2H5a1 1 0 01-1-1zm5-1a1 1 0 100 2h1a1 1 0 100-2H9z" />
+                </svg>
+              </div>
+              <div>
+                <h1 className="text-3xl md:text-4xl font-bold mb-2">স্বপ্নচারী টুয়েন্টি গ্রুপ</h1>
+                <p className="text-xl opacity-90">আমাদের স্বপ্নের যাত্রা, একসাথে এগিয়ে চলা</p>
+              </div>
+            </div>
+            
+            <div className="grid md:grid-cols-3 gap-6">
+              <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-4">
+                <div className="text-3xl font-bold mb-1">{formatBDT(collected)}</div>
+                <div className="text-sm opacity-80">মোট সংগ্রহ</div>
+              </div>
+              <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-4">
+                <div className="text-3xl font-bold mb-1">{formatBDNumber(pct)}%</div>
+                <div className="text-sm opacity-80">লক্ষ্য অর্জন</div>
+              </div>
+              <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-4">
+                <div className="text-3xl font-bold mb-1">{formatBDNumber(paidMemberCount)}/{formatBDNumber(21)}</div>
+                <div className="text-sm opacity-80">সদস্য পেইড</div>
+              </div>
             </div>
           </div>
-          <div>
-            <h3 className="text-slate-400 text-sm font-semibold mb-2">দ্রুত তথ্য</h3>
-            <ul className="leading-7 text-slate-300">
-              <li>
-                পেমেন্ট ডেডলাইন: প্রতি মাসের <b>১০</b> তারিখ
-              </li>
-              <li>
-                সদস্যদের পেমেন্ট: <b>৫,০০০</b> টাকা
-              </li>
-            </ul>
+        </div>
+      </div>
+
+      {/* Navigation Tabs */}
+      <div className="mb-8">
+        <div className="bg-white dark:bg-slate-800 rounded-2xl shadow-lg p-2">
+          <div className="flex flex-wrap gap-2">
+            {[
+              { id: 'overview', label: 'সংক্ষিপ্ত বিবরণ', icon: '' },
+        
+              
+              { id: 'documents', label: 'ডকুমেন্ট', icon: '' }
+            ].map(tab => (
+              <button
+                key={tab.id}
+                onClick={() => setActiveTab(tab.id)}
+                className={`flex items-center gap-2 px-4 py-2 rounded-xl transition-all duration-200 ${
+                  activeTab === tab.id
+                    ? 'bg-gradient-to-r from-indigo-500 to-purple-600 text-white shadow-lg transform scale-105'
+                    : 'text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-slate-700'
+                }`}
+              >
+                <span>{tab.icon}</span>
+                <span className="font-medium text-sm">{tab.label}</span>
+              </button>
+            ))}
           </div>
         </div>
-      </Card>
+      </div>
+
+      {/* Content based on active tab */}
+      {activeTab === 'overview' && (
+        <div className="grid lg:grid-cols-2 gap-8">
+          {/* Stats Cards */}
+          <div className="space-y-6">
+            <div className="bg-white dark:bg-slate-800 rounded-2xl shadow-lg p-6">
+              <h3 className="text-xl font-bold mb-4 text-gray-800 dark:text-white flex items-center gap-2">
+                <span className="w-8 h-8 bg-gradient-to-r from-green-400 to-blue-500 rounded-lg flex items-center justify-center text-white text-sm">💰</span>
+                আর্থিক অবস্থা
+              </h3>
+              <div className="space-y-4">
+                <div className="flex justify-between items-center p-3 bg-gray-50 dark:bg-slate-700 rounded-xl">
+                  <span className="text-gray-600 dark:text-gray-300">মোট লক্ষ্য</span>
+                  <span className="font-bold text-lg text-gray-900 dark:text-white">{formatBDT(target)}</span>
+                </div>
+                <div className="flex justify-between items-center p-3 bg-gray-50 dark:bg-slate-700 rounded-xl">
+                  <span className="text-gray-600 dark:text-gray-300">সংগ্রহকৃত</span>
+                  <span className="font-bold text-lg text-green-600">{formatBDT(collected)}</span>
+                </div>
+                <div className="flex justify-between items-center p-3 bg-gray-50 dark:bg-slate-700 rounded-xl">
+                  <span className="text-gray-600 dark:text-gray-300">বাকি আছে</span>
+                  <span className="font-bold text-lg text-orange-600">{formatBDT(remainingAmount)}</span>
+                </div>
+              </div>
+            </div>
+
+            <div className="bg-white dark:bg-slate-800 rounded-2xl shadow-lg p-6">
+              <h3 className="text-xl font-bold mb-4 text-gray-800 dark:text-white flex items-center gap-2">
+                <span className="w-8 h-8 bg-gradient-to-r from-purple-400 to-pink-500 rounded-lg flex items-center justify-center text-white text-sm">⏰</span>
+                পেমেন্ট রিমাইন্ডার
+              </h3>
+              <div className="text-center">
+                <div className="text-3xl font-bold text-indigo-600 mb-2">
+                  {nextPaymentDate.toLocaleDateString('bn-BD', { day: 'numeric', month: 'long', year: 'numeric' })}
+                </div>
+                <div className="text-gray-600 dark:text-gray-300 mb-4">পরবর্তী পেমেন্টের তারিখ</div>
+                <div className={`inline-flex items-center px-4 py-2 rounded-full text-sm font-medium ${
+                  remainingDays <= 3 ? 'bg-red-100 text-red-800' : remainingDays <= 7 ? 'bg-yellow-100 text-yellow-800' : 'bg-green-100 text-green-800'
+                }`}>
+                  {remainingDays} দিন বাকি
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Progress Section */}
+          <div className="space-y-6">
+            <div className="bg-white dark:bg-slate-800 rounded-2xl shadow-lg p-6">
+              <h3 className="text-xl font-bold mb-6 text-gray-800 dark:text-white flex items-center gap-2">
+                <span className="w-8 h-8 bg-gradient-to-r from-blue-400 to-cyan-500 rounded-lg flex items-center justify-center text-white text-sm">📈</span>
+                অগ্রগতির চার্ট
+              </h3>
+              
+              {/* Progress Bar */}
+              <div className="mb-6">
+                <div className="flex justify-between mb-2">
+                  <span className="text-gray-600 dark:text-gray-300">সামগ্রিক অগ্রগতি</span>
+                  <span className="font-bold text-indigo-600">{pct}%</span>
+                </div>
+                <div className="w-full bg-gray-200 dark:bg-slate-700 rounded-full h-4">
+                  <div 
+                    className="bg-gradient-to-r from-indigo-500 to-purple-600 h-4 rounded-full transition-all duration-1000 relative overflow-hidden"
+                    style={{ width: `${pct}%` }}
+                  >
+                    <div className="absolute inset-0 bg-white/20 animate-pulse"></div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Members Status */}
+              <div className="grid grid-cols-2 gap-4">
+                <div className="text-center p-4 bg-green-50 dark:bg-green-900/20 rounded-xl">
+                  <div className="text-2xl font-bold text-green-600 mb-1">{paidMemberCount}</div>
+                  <div className="text-sm text-green-600 dark:text-green-400">পেমেন্ট সম্পন্ন</div>
+                </div>
+                <div className="text-center p-4 bg-orange-50 dark:bg-orange-900/20 rounded-xl">
+                  <div className="text-2xl font-bold text-orange-600 mb-1">{21 - paidMemberCount}</div>
+                  <div className="text-sm text-orange-600 dark:text-orange-400">বকেয়া আছে</div>
+                </div>
+              </div>
+            </div>
+
+            <div className="bg-white dark:bg-slate-800 rounded-2xl shadow-lg p-6">
+              <h3 className="text-xl font-bold mb-4 text-gray-800 dark:text-white flex items-center gap-2">
+                <span className="w-8 h-8 bg-gradient-to-r from-yellow-400 to-orange-500 rounded-lg flex items-center justify-center text-white text-sm">📊</span>
+                এই মাসের অবস্থা
+              </h3>
+              <div className="space-y-3">
+                <div className="flex justify-between items-center">
+                  <span className="text-gray-600 dark:text-gray-300">মাসিক লক্ষ্য</span>
+                  <span className="font-bold">{formatBDT(monthlyTarget)}</span>
+                </div>
+                <div className="flex justify-between items-center">
+                  <span className="text-gray-600 dark:text-gray-300">এই মাসে সংগ্রহ</span>
+                  <span className="font-bold text-green-600">{formatBDT(currentMonthCollection)}</span>
+                </div>
+                <div className="w-full bg-gray-200 dark:bg-slate-700 rounded-full h-2">
+                  <div 
+                    className="bg-green-500 h-2 rounded-full transition-all duration-700"
+                    style={{ width: `${Math.min(100, (currentMonthCollection / monthlyTarget) * 100)}%` }}
+                  ></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {activeTab === 'rules' && (
+        <div className="max-w-4xl mx-auto">
+          <div className="bg-white dark:bg-slate-800 rounded-2xl shadow-lg p-8">
+            <h2 className="text-2xl font-bold mb-6 text-gray-800 dark:text-white flex items-center gap-3">
+              <span className="w-10 h-10 bg-gradient-to-r from-indigo-500 to-purple-600 rounded-xl flex items-center justify-center text-white">
+                📋
+              </span>
+              সংস্থার নিয়মাবলী
+            </h2>
+            
+            <div className="mb-8">
+              <h3 className="text-lg font-semibold mb-4 text-gray-700 dark:text-gray-300">মূল নিয়মসমূহ:</h3>
+              <div className="space-y-4">
+                {[
+                  { icon: '🤝', text: 'সবার সিদ্ধান্ত মেনে চলা এবং সংস্থার স্বার্থ রক্ষা করা।' },
+                  { icon: '⚖️', text: 'কোনো নিয়ম বহির্ভূত কাজ না করা এবং স্বচ্ছতা বজায় রাখা।' },
+                  { icon: '💰', text: 'প্রতি মাসের ১০ তারিখের মধ্যে নির্ধারিত অর্থ জমা দেওয়া।' },
+                  { icon: '🌟', text: 'সংস্থার মঙ্গল ও উন্নতির জন্য সক্রিয়ভাবে কাজ করা।' },
+                  { icon: '⚠️', text: 'নিয়ম ভঙ্গ বা সংস্থার বিরোধী কাজ করলে সদস্যপদ বাতিল হতে পারে।' }
+                ].map((rule, index) => (
+                  <div key={index} className="flex items-start gap-4 p-4 bg-gray-50 dark:bg-slate-700 rounded-xl">
+                    <span className="text-2xl">{rule.icon}</span>
+                    <span className="text-gray-700 dark:text-gray-300 leading-relaxed">{rule.text}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div className="border-t border-gray-200 dark:border-slate-600 pt-6">
+              <h3 className="text-lg font-semibold mb-4 text-gray-700 dark:text-gray-300">অতিরিক্ত তথ্য:</h3>
+              <div className="bg-blue-50 dark:bg-blue-900/20 border-l-4 border-blue-500 p-4 rounded-r-xl">
+                <p className="text-blue-800 dark:text-blue-200 leading-relaxed">
+                  📘 বিস্তারিত নিয়মাবলী ও শর্তাদি জানার জন্য নিচের PDF ডকুমেন্ট দেখুন। 
+                  সকল সদস্যের জন্য এই নিয়মাবলী জানা ও মেনে চলা বাধ্যতামূলক।
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {activeTab === 'documents' && (
+        <div className="max-w-5xl mx-auto">
+          <div className="bg-white dark:bg-slate-800 rounded-2xl shadow-lg p-8">
+            <h2 className="text-2xl font-bold mb-6 text-gray-800 dark:text-white flex items-center gap-3">
+              <span className="w-10 h-10 bg-gradient-to-r from-green-500 to-teal-600 rounded-xl flex items-center justify-center text-white">
+                📄
+              </span>
+              অফিসিয়াল ডকুমেন্ট
+            </h2>
+            
+            <div className="mb-6">
+              <button
+                onClick={() => setShowPDF(!showPDF)}
+                className="group relative overflow-hidden bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white font-semibold py-4 px-8 rounded-2xl transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
+              >
+                <span className="relative z-10 flex items-center gap-3">
+                  {showPDF ? (
+                    <>
+                      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                      </svg>
+                      PDF লুকান
+                    </>
+                  ) : (
+                    <>
+                      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                      </svg>
+                      সম্পূর্ণ PDF ডকুমেন্ট দেখুন
+                    </>
+                  )}
+                </span>
+                <div className="absolute inset-0 bg-gradient-to-r from-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+              </button>
+            </div>
+
+            {showPDF && (
+              <div className="space-y-6">
+                <div className="bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-slate-700 dark:to-slate-600 rounded-2xl p-6">
+                  <div className="flex items-center gap-3 mb-4">
+                    <div className="w-8 h-8 bg-blue-500 rounded-lg flex items-center justify-center">
+                      <svg className="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 20 20">
+                        <path d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z" />
+                      </svg>
+                    </div>
+                    <h3 className="text-lg font-semibold text-gray-800 dark:text-white">নিয়মাবলী PDF ভিউয়ার</h3>
+                  </div>
+                  <p className="text-gray-600 dark:text-gray-300 text-sm mb-4">
+                    নিচের ভিউয়ারে সংস্থার সম্পূর্ণ নিয়মাবলী ও শর্তাদি দেখুন। প্রয়োজনে ডাউনলোড বা প্রিন্ট করতে পারবেন।
+                  </p>
+                </div>
+                
+                <div className="relative bg-white dark:bg-slate-700 rounded-2xl shadow-2xl overflow-hidden border border-gray-200 dark:border-slate-600">
+                  <div className="absolute top-0 left-0 right-0 h-12 bg-gradient-to-r from-gray-100 to-gray-200 dark:from-slate-600 dark:to-slate-500 flex items-center px-4">
+                    <div className="flex gap-2">
+                      <div className="w-3 h-3 rounded-full bg-red-400"></div>
+                      <div className="w-3 h-3 rounded-full bg-yellow-400"></div>
+                      <div className="w-3 h-3 rounded-full bg-green-400"></div>
+                    </div>
+                    <div className="flex-1 text-center">
+                      <span className="text-sm text-gray-600 dark:text-gray-300 font-medium">নিয়মাবলী.pdf</span>
+                    </div>
+                  </div>
+                  
+                  <div className="pt-12 h-[700px]">
+                    <iframe
+                      src="/src/utils/rules.pdf#toolbar=1&navpanes=1&scrollbar=1"
+                      className="w-full h-full border-0"
+                      title="স্বপ্নচারী টুয়েন্টি গ্রুপ - অফিসিয়াল নিয়মাবলী"
+                      loading="lazy"
+                    />
+                  </div>
+                </div>
+                
+                <div className="flex flex-wrap gap-4 justify-center">
+                  <a
+                    href="/src/utils/rules.pdf"
+                    download="স্বপ্নচারী-টুয়েন্টি-গ্রুপ-নিয়মাবলী.pdf"
+                    className="inline-flex items-center gap-2 px-6 py-3 bg-green-600 hover:bg-green-700 text-white rounded-xl transition-colors duration-200 shadow-lg hover:shadow-xl transform hover:scale-105"
+                  >
+                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                    </svg>
+                    ডাউনলোড করুন
+                  </a>
+                  <button
+                    onClick={() => window.print()}
+                    className="inline-flex items-center gap-2 px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-xl transition-colors duration-200 shadow-lg hover:shadow-xl transform hover:scale-105"
+                  >
+                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
+                    </svg>
+                    প্রিন্ট করুন
+                  </button>
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
     </div>
   );
 }

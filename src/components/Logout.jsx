@@ -1,14 +1,11 @@
 import React, { useState } from "react";
-import { googleLogout } from "@react-oauth/google";
 import LogoutModal from "./LogOutModal";
 
 export default function Logout({ onLogout }) {
   const [showModal, setShowModal] = useState(false);
 
   const handleConfirm = () => {
-    googleLogout();
     localStorage.removeItem("user");
-    localStorage.removeItem("googleToken");
 
     if (onLogout) onLogout(); // notify parent
     setShowModal(false);
