@@ -80,7 +80,7 @@ export default function App() {
 
       setUser(userInfo);
       localStorage.setItem("user", JSON.stringify(userInfo));
-
+    
       setTimeout(() => setIsLoading(false), 500);
     } catch (error) {
       console.error("Login error:", error);
@@ -112,10 +112,29 @@ export default function App() {
     }
   };
 
+  const sendLastLogin = async () => {
+    console.log(user);
+    try {
+      const res = await fetch(
+        "https://sopnochari-backend-wufa.vercel.app/api/person.js?username=" +
+          user?.username,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      if (!res.ok) throw new Error("Failed to send last login");
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   // Fetch contributions on mount
   useEffect(() => {
     fetchContributions();
+    sendLastLogin();
   }, []);
 
   // Update admin status if user changes
@@ -124,7 +143,7 @@ export default function App() {
       setisAdminLoggedIn(false);
       return;
     }
-
+sendLastLogin();
     if (user.isAdmin) {
       setisAdminLoggedIn(true);
     } else {
