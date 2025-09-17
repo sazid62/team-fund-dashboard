@@ -100,7 +100,7 @@ export default function Home({ contributionsJson }) {
       {/* Navigation Tabs */}
       <div className="mb-8">
         <div className="bg-white dark:bg-slate-800 rounded-2xl shadow-lg p-2">
-          <div className="flex flex-wrap gap-2">
+          <div className="flex  flex-wrap gap-4">
             {[
               { id: 'overview', label: 'সংক্ষিপ্ত বিবরণ', icon: BarChart3 },
               { id: 'documents', label: 'ডকুমেন্ট', icon: FileText }
@@ -127,7 +127,7 @@ export default function Home({ contributionsJson }) {
 
       {/* Content based on active tab */}
       {activeTab === 'overview' && (
-        <div className="m-5 grid lg:grid-cols-2 gap-8">
+        <div className="m-2 grid lg:grid-cols-2 gap-8">
           {/* Stats Cards */}
           <div className="space-y-6">
             <div className="bg-white dark:bg-slate-800 rounded-2xl shadow-lg p-6">
@@ -235,46 +235,7 @@ export default function Home({ contributionsJson }) {
         </div>
       )}
 
-      {activeTab === 'rules' && (
-        <div className="max-w-4xl mx-auto">
-          <div className="bg-white dark:bg-slate-800 rounded-2xl shadow-lg p-8">
-            <h2 className="text-2xl font-bold mb-6 text-gray-800 dark:text-white flex items-center gap-3">
-              <span className="w-10 h-10 bg-gradient-to-r from-indigo-500 to-purple-600 rounded-xl flex items-center justify-center text-white">
-                📋
-              </span>
-              সংস্থার নিয়মাবলী
-            </h2>
-            
-            <div className="mb-8">
-              <h3 className="text-lg font-semibold mb-4 text-gray-700 dark:text-gray-300">মূল নিয়মসমূহ:</h3>
-              <div className="space-y-4">
-                {[
-                  { icon: '🤝', text: 'সবার সিদ্ধান্ত মেনে চলা এবং সংস্থার স্বার্থ রক্ষা করা।' },
-                  { icon: '⚖️', text: 'কোনো নিয়ম বহির্ভূত কাজ না করা এবং স্বচ্ছতা বজায় রাখা।' },
-                  { icon: '💰', text: 'প্রতি মাসের ১০ তারিখের মধ্যে নির্ধারিত অর্থ জমা দেওয়া।' },
-                  { icon: '🌟', text: 'সংস্থার মঙ্গল ও উন্নতির জন্য সক্রিয়ভাবে কাজ করা।' },
-                  { icon: '⚠️', text: 'নিয়ম ভঙ্গ বা সংস্থার বিরোধী কাজ করলে সদস্যপদ বাতিল হতে পারে।' }
-                ].map((rule, index) => (
-                  <div key={index} className="flex items-start gap-4 p-4 bg-gray-50 dark:bg-slate-700 rounded-xl">
-                    <span className="text-2xl">{rule.icon}</span>
-                    <span className="text-gray-700 dark:text-gray-300 leading-relaxed">{rule.text}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            <div className="border-t border-gray-200 dark:border-slate-600 pt-6">
-              <h3 className="text-lg font-semibold mb-4 text-gray-700 dark:text-gray-300">অতিরিক্ত তথ্য:</h3>
-              <div className="bg-blue-50 dark:bg-blue-900/20 border-l-4 border-blue-500 p-4 rounded-r-xl">
-                <p className="text-blue-800 dark:text-blue-200 leading-relaxed">
-                  📘 বিস্তারিত নিয়মাবলী ও শর্তাদি জানার জন্য নিচের PDF ডকুমেন্ট দেখুন। 
-                  সকল সদস্যের জন্য এই নিয়মাবলী জানা ও মেনে চলা বাধ্যতামূলক।
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
+   
 
       {activeTab === 'documents' && (
       <DocumentTab/>

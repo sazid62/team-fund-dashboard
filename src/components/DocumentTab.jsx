@@ -63,7 +63,7 @@ const DocumentTab = () => {
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {documents.map((doc, idx) => (
-      <div className="max-w-sm w-full mx-auto bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-600 rounded-xl shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300">
+      <div key={idx} className="max-w-sm w-full mx-auto bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-600 rounded-xl shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300">
   <div className="bg-emerald-500 text-white text-center py-3 px-4 font-semibold text-sm sm:text-base">
     <h2>{doc.banglaName}</h2>
   </div>
@@ -89,49 +89,38 @@ const DocumentTab = () => {
         </section>
 
         {/* Rules PDF */}
-        <section className="bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-slate-700 dark:to-slate-600 p-6 rounded-2xl shadow-lg">
-          <header className="flex items-center gap-3 mb-4">
-            <div className="w-8 h-8 bg-blue-500 rounded-lg flex items-center justify-center">
-              <FileText className="w-4 h-4 text-white" />
-            </div>
-            <h2 className="text-lg font-semibold text-gray-800 dark:text-white">
-              নিয়মাবলী PDF
-            </h2>
-          </header>
+    <section className="bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-slate-700 dark:to-slate-600 p-6 rounded-2xl shadow-lg">
+  <header className="flex items-center gap-3 mb-4">
+    <div className="w-8 h-8 bg-blue-500 rounded-lg flex items-center justify-center">
+      <FileText className="w-4 h-4 text-white" />
+    </div>
+    <h2 className="text-lg font-semibold text-gray-800 dark:text-white">
+      নিয়মাবলী PDF
+    </h2>
+  </header>
 
-          <div className="relative rounded-2xl overflow-hidden border dark:border-slate-600 bg-white dark:bg-slate-700 shadow">
-            <div className="absolute top-0 left-0 right-0 h-10 bg-gradient-to-r from-gray-100 to-gray-200 dark:from-slate-600 dark:to-slate-500 flex items-center justify-between px-4 text-sm text-gray-600 dark:text-gray-300 font-medium">
-              <span className="truncate w-full text-center">
-                স্বপ্নচারী টুয়েন্টি গ্রুপ - নিয়মাবলী.pdf
-              </span>
-            </div>
-            <div className="pt-10 h-[500px]">
-              <iframe
-                src="rules.pdf#toolbar=1"
-                className="w-full h-full border-0"
-                title="নিয়মাবলী"
-              />
-            </div>
-          </div>
+  {/* Desktop View - Show PDF */}
+  <div className="hidden md:block w-full h-[75vh]">
+    <iframe
+      src="rules.pdf#toolbar=1"
+      className="w-full h-full border-0 rounded-md"
+      title="নিয়মাবলী"
+    ></iframe>
+  </div>
 
-          <div className="flex flex-wrap justify-center gap-4 mt-4">
-            <a
-              href="/rules.pdf"
-              download="স্বপ্নচারী-টুয়েন্টি-গ্রুপ-নিয়মাবলী.pdf"
-              className="inline-flex items-center gap-2 px-6 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg shadow hover:shadow-lg"
-            >
-              <Download size={18} />
-              ডাউনলোড
-            </a>
-            <button
-              onClick={() => window.print()}
-              className="inline-flex items-center gap-2 px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg shadow hover:shadow-lg"
-            >
-              <Printer size={18} />
-              প্রিন্ট করুন
-            </button>
-          </div>
-        </section>
+  {/* Mobile View - Show Download Button */}
+  <div className="block md:hidden text-center">
+    
+    <a
+      href="rules.pdf"
+      download
+      className="inline-block px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition"
+    >
+      PDF ডাউনলোড করুন
+    </a>
+  </div>
+</section>
+
       </div>
     </div>
   );
