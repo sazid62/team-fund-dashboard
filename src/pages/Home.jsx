@@ -127,7 +127,7 @@ export default function Home({ contributionsJson }) {
 
       {/* Content based on active tab */}
       {activeTab === 'overview' && (
-        <div className="grid lg:grid-cols-2 gap-8">
+        <div className="m-5 grid lg:grid-cols-2 gap-8">
           {/* Stats Cards */}
           <div className="space-y-6">
             <div className="bg-white dark:bg-slate-800 rounded-2xl shadow-lg p-6">

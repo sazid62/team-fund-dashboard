@@ -107,7 +107,7 @@ const DocumentTab = () => {
             </div>
             <div className="pt-10 h-[500px]">
               <iframe
-                src="public/rules.pdf#toolbar=1"
+                src="rules.pdf#toolbar=1"
                 className="w-full h-full border-0"
                 title="নিয়মাবলী"
               />

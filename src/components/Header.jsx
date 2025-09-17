@@ -28,7 +28,7 @@ export default function Header({ active, onTab, user, onLogout }) {
           <a href="/">
 
           
-          <img src="public/logo/logo.png" height={50} width={50} style={{borderRadius: 10}}/>
+          <img src="logo/logo.png" height={50} width={50} style={{borderRadius: 10}} />
 </a>
           <div className="hidden sm:block">
             <div className="font-extrabold tracking-wide text-slate-100 text-sm md:text-base">
