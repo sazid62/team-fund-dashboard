@@ -25,6 +25,7 @@ import {
   AlertCircle,
   Check
 } from "lucide-react";
+import DocumentTab from "../components/DocumentTab.jsx";
 
 export default function Home({ contributionsJson }) {
   const target = 5000 * 21 * 24;
@@ -276,96 +277,7 @@ export default function Home({ contributionsJson }) {
       )}
 
       {activeTab === 'documents' && (
-        <div className="max-w-5xl mx-auto">
-          <div className="bg-white dark:bg-slate-800 rounded-2xl shadow-lg p-8">
-            <h2 className="text-2xl font-bold mb-6 text-gray-800 dark:text-white flex items-center gap-3">
-              <span className="w-10 h-10 bg-gradient-to-r from-green-500 to-teal-600 rounded-xl flex items-center justify-center text-white">
-                📄
-              </span>
-              অফিসিয়াল ডকুমেন্ট
-            </h2>
-            
-            <div className="mb-6">
-              <button
-                onClick={() => setShowPDF(!showPDF)}
-                className="group relative overflow-hidden bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white font-semibold py-4 px-8 rounded-2xl transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
-              >
-                <span className="relative z-10 flex items-center gap-3">
-                  {showPDF ? (
-                    <>
-                      <EyeOff size={20} />
-                      PDF লুকান
-                    </>
-                  ) : (
-                    <>
-                      <Eye size={20} />
-                      সম্পূর্ণ PDF ডকুমেন্ট দেখুন
-                    </>
-                  )}
-                </span>
-                <div className="absolute inset-0 bg-gradient-to-r from-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-              </button>
-            </div>
-
-            {showPDF && (
-              <div className="space-y-6">
-                <div className="bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-slate-700 dark:to-slate-600 rounded-2xl p-6">
-                  <div className="flex items-center gap-3 mb-4">
-                    <div className="w-8 h-8 bg-blue-500 rounded-lg flex items-center justify-center">
-                      <svg className="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 20 20">
-                        <path d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z" />
-                      </svg>
-                    </div>
-                    <h3 className="text-lg font-semibold text-gray-800 dark:text-white">নিয়মাবলী PDF ভিউয়ার</h3>
-                  </div>
-                  <p className="text-gray-600 dark:text-gray-300 text-sm mb-4">
-                    নিচের ভিউয়ারে সংস্থার সম্পূর্ণ নিয়মাবলী ও শর্তাদি দেখুন। প্রয়োজনে ডাউনলোড বা প্রিন্ট করতে পারবেন।
-                  </p>
-                </div>
-                
-                <div className="relative bg-white dark:bg-slate-700 rounded-2xl shadow-2xl overflow-hidden border border-gray-200 dark:border-slate-600">
-                  <div className="absolute top-0 left-0 right-0 h-12 bg-gradient-to-r from-gray-100 to-gray-200 dark:from-slate-600 dark:to-slate-500 flex items-center px-4">
-                    <div className="flex gap-2">
-                      <div className="w-3 h-3 rounded-full bg-red-400"></div>
-                      <div className="w-3 h-3 rounded-full bg-yellow-400"></div>
-                      <div className="w-3 h-3 rounded-full bg-green-400"></div>
-                    </div>
-                    <div className="flex-1 text-center">
-                      <span className="text-sm text-gray-600 dark:text-gray-300 font-medium">নিয়মাবলী.pdf</span>
-                    </div>
-                  </div>
-                  
-                  <div className="pt-12 h-[700px]">
-                    <iframe
-                      src="/rules.pdf#toolbar=1&navpanes=1&scrollbar=1"
-                      className="w-full h-full border-0"
-                      title="স্বপ্নচারী টুয়েন্টি গ্রুপ - অফিসিয়াল নিয়মাবলী"
-                      loading="lazy"
-                    />
-                  </div>
-                </div>
-                
-                <div className="flex flex-wrap gap-4 justify-center">
-                  <a
-                    href="/rules.pdf"
-                    download="স্বপ্নচারী-টুয়েন্টি-গ্রুপ-নিয়মাবলী.pdf"
-                    className="inline-flex items-center gap-2 px-6 py-3 bg-green-600 hover:bg-green-700 text-white rounded-xl transition-colors duration-200 shadow-lg hover:shadow-xl transform hover:scale-105"
-                  >
-                    <Download size={20} />
-                    ডাউনলোড করুন
-                  </a>
-                  <button
-                    onClick={() => window.print()}
-                    className="inline-flex items-center gap-2 px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-xl transition-colors duration-200 shadow-lg hover:shadow-xl transform hover:scale-105"
-                  >
-                    <Printer size={20} />
-                    প্রিন্ট করুন
-                  </button>
-                </div>
-              </div>
-            )}
-          </div>
-        </div>
+      <DocumentTab/>
       )}
     </div>
   </div>

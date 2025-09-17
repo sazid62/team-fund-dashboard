@@ -25,15 +25,11 @@ export default function Header({ active, onTab, user, onLogout }) {
       <header className="flex items-center justify-between gap-3 mb-4">
         {/* Logo and Title */}
         <div className="flex items-center gap-3">
-          <div
-            aria-hidden
-            className="w-11 h-11 rounded-xl shadow-soft"
-            style={{
-              background:
-                "radial-gradient(circle at 30% 30%, #6366f1 0 40%, transparent 41%), radial-gradient(circle at 70% 70%, #a855f7 0 40%, transparent 41%)",
-              boxShadow: "0 0 0 2px #0b1220, 0 10px 30px rgba(0,0,0,.5)",
-            }}
-          />
+          <a href="/">
+
+          
+          <img src="public/logo/logo.png" height={50} width={50} style={{borderRadius: 10}}/>
+</a>
           <div className="hidden sm:block">
             <div className="font-extrabold tracking-wide text-slate-100 text-sm md:text-base">
               স্বপ্নচারী টুয়েন্টি গ্রুপ
