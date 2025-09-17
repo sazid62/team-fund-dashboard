@@ -45,7 +45,7 @@ const DocumentTab = () => {
   }, []);
 
   return (
-    <div className="max-w-6xl mx-auto p-4">
+    <div className="max-w-6xl ">
       <div className="space-y-10">
         {/* Paid Slips */}
         <section className="bg-gradient-to-r from-green-50 to-emerald-50 dark:from-slate-700 dark:to-slate-600 p-6 rounded-2xl shadow-lg">

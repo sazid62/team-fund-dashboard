@@ -99,8 +99,8 @@ export default function Home({ contributionsJson }) {
 
       {/* Navigation Tabs */}
       <div className="mb-8">
-        <div className="bg-white dark:bg-slate-800 rounded-2xl shadow-lg p-2">
-          <div className="flex  flex-wrap gap-4">
+        <div className="bg-white dark:bg-slate-800 rounded-2xl shadow-lg p-2 mb-5">
+          <div className="flex  flex-wrap gap-2 ">
             {[
               { id: 'overview', label: 'সংক্ষিপ্ত বিবরণ', icon: BarChart3 },
               { id: 'documents', label: 'ডকুমেন্ট', icon: FileText }
